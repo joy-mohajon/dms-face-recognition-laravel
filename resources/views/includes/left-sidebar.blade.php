@@ -12,8 +12,10 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel d-flex mb-3 mt-3 pb-3">
             <div class="image">
-                <img class="img-circle elevation-2" src="{{ asset('plugin/adminLte/img/avatar.png') }}"
-                    alt="User Image">
+                <img class="img-circle elevation-2" alt="User Image"
+                    @if (auth()->user()->profile_image) src="{{ asset(auth()->user()->profile_image) }}"
+                @else
+                src="{{ asset('plugin/adminLte/img/avatar.png') }}" @endif>
             </div>
             <div class="info">
                 <a class="d-block" href="{{ route('get.profile') }}">{{ auth()->user()->name }}</a>

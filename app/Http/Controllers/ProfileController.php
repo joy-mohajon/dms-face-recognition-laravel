@@ -4,10 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Hash;
 
 class ProfileController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -39,9 +50,9 @@ class ProfileController extends Controller
 
         if($request->password){
             $user->update([
-            'name' => request('name'),
-            'email'=> $user->email,
-            'password' => hash::make($request['password'])
+                'name' => request('name'),
+                'email'=> $user->email,
+                'password' => hash::make($request['password'])
             ]);
         }else{
             $user->update([
@@ -84,4 +95,32 @@ class ProfileController extends Controller
     {
         //
     }
+
+    public function updateProfileImage(Request $request)
+    {
+        $request->validate([
+            'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:10000',
+        ]);
+
+        $user = auth()->user();
+
+        $fileName = $user->name . '.' . $request->profile_image->getClientOriginalExtension();
+
+        if ($request->hasFile('profile_image')) {
+            $filePath = $request->file('profile_image')->storeAs('images',$fileName,'public');
+            // $filePath = Storage::putFileAs('public', $request->file('profile_image'), $fileName);
+            // $request->profile_image->move(public_path('profile_images'), $fileName);
+
+            // Delete old profile image if exists
+            if ($user->profile_image) {
+                Storage::disk('public')->delete($fileName);
+            }
+
+            $imagePath = Storage::url($filePath);
+            $user->update(['profile_image' => $imagePath]);
+        }
+
+        return back()->with('success', 'Profile image updated successfully.');
+    }
+
 }
