@@ -102,6 +102,15 @@
                     @endif
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ route('recognize-face') }}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Attendance
+                            <span class="right badge badge-danger">New</span>
+                        </p>
+                    </a>
+                </li>
+                {{-- <li class="nav-item">
                     <a class="nav-link" href="#">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
@@ -109,7 +118,7 @@
                             <span class="right badge badge-danger">New</span>
                         </p>
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

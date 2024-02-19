@@ -6,6 +6,7 @@ use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FaceRecognitionController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 
@@ -47,6 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(ProfileController::class)->group(function (){
         Route::get('profile', 'index')->name('get.profile');
         Route::put('profile', 'store')->name('post.profile');
+        Route::put('profile/image', 'updateProfileImage')->name('profile.image');
     });
 
     /*
@@ -56,6 +58,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class)->except(['show']);
     Route::get('/files/{id}/preview', [FileController::class, 'preview'])->name('file.preview');
     Route::resource('files', FileController::class)->except(['edit', 'update']);
+
+
+    Route::get('/recognize-face', [FaceRecognitionController::class, 'recognizeFaces'])->name('recognize-face');
 });
 
 

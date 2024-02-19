@@ -111,7 +111,6 @@ class ProfileController extends Controller
             // $filePath = Storage::putFileAs('public', $request->file('profile_image'), $fileName);
             // $request->profile_image->move(public_path('profile_images'), $fileName);
 
-            // Delete old profile image if exists
             if ($user->profile_image) {
                 Storage::disk('public')->delete($fileName);
             }
