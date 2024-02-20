@@ -39,12 +39,19 @@ class FaceRecognitionController extends Controller
             $name = $recognizedData[0];
             $date = $recognizedData[2];
 
-            AttendanceSheet::create([
-                'name' => $name,
-                'date' => $date,
-                'user_id' => Auth::user()->id,
-            ]);
+            // Check if an entry already exists for the given date and user
+            $existingEntry = AttendanceSheet::where('date', $date)
+                ->where('user_id', Auth::user()->id)
+                ->first();
 
+            if (!$existingEntry) {
+                // No existing entry for the given date and user, create a new one
+                AttendanceSheet::create([
+                    'name' => $name,
+                    'date' => $date,
+                    'user_id' => Auth::user()->id,
+                ]);
+            }
             return Redirect()->route('get.profile')->with('success', 'Your attendance has been recorded successfully.');
         }
 

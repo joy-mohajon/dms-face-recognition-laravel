@@ -104,7 +104,8 @@ class ProfileController extends Controller
 
         $user = auth()->user();
 
-        $fileName = $user->name . '.' . $request->profile_image->getClientOriginalExtension();
+        $nameWithoutSpaces = str_replace(' ', '_', $user->name);
+        $fileName = $nameWithoutSpaces . '.' . $request->profile_image->getClientOriginalExtension();
 
         if ($request->hasFile('profile_image')) {
             $filePath = $request->file('profile_image')->storeAs('images',$fileName,'public');
